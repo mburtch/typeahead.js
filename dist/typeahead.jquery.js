@@ -1330,7 +1330,7 @@
                     $wrapper = $(www.html.wrapper);
                     $hint = $elOrNull(o.hint);
                     $menu = $elOrNull(o.menu);
-                    defaultHint = o.hint !== false && !$hint;
+                    defaultHint = o.changeInputValue !== false && o.hint !== false && !$hint;
                     defaultMenu = o.menu !== false && !$menu;
                     defaultHint && ($hint = buildHintFromInput($input, www));
                     defaultMenu && ($menu = $(www.html.menu).css(www.css.menu));
@@ -1357,7 +1357,8 @@
                         input: input,
                         menu: menu,
                         eventBus: eventBus,
-                        minLength: o.minLength
+                        minLength: o.minLength,
+                        changeInputValue: o.changeInputValue
                     }, www);
                     $input.data(keys.www, www);
                     $input.data(keys.typeahead, typeahead);
