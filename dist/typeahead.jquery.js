@@ -1049,6 +1049,7 @@
             www.mixin(this);
             this.eventBus = o.eventBus;
             this.minLength = _.isNumber(o.minLength) ? o.minLength : 1;
+            this.changeInputValue = !_.isUndefined(o.changeInputValue) ? o.changeInputValue : true;
             this.input = o.input;
             this.menu = o.menu;
             this.enabled = true;
@@ -1250,7 +1251,9 @@
             select: function select($selectable) {
                 var data = this.menu.getSelectableData($selectable);
                 if (data && !this.eventBus.before("select", data.obj)) {
-                    this.input.setQuery(data.val, true);
+                    if (this.changeInputValue) {
+                        this.input.setQuery(data.val, true);
+                    }
                     this.eventBus.trigger("select", data.obj);
                     this.close();
                     return true;
@@ -1263,7 +1266,9 @@
                 data = this.menu.getSelectableData($selectable);
                 isValid = data && query !== data.val;
                 if (isValid && !this.eventBus.before("autocomplete", data.obj)) {
-                    this.input.setQuery(data.val);
+                    if (this.changeInputValue) {
+                        this.input.setQuery(data.val);
+                    }
                     this.eventBus.trigger("autocomplete", data.obj);
                     return true;
                 }
@@ -1278,9 +1283,9 @@
                 cancelMove = this._minLengthMet() && this.menu.update(query);
                 if (!cancelMove && !this.eventBus.before("cursorchange", payload)) {
                     this.menu.setCursor($candidate);
-                    if (data) {
+                    if (data && this.changeInputValue) {
                         this.input.setInputValue(data.val);
-                    } else {
+                    } else if (this.changeInputValue) {
                         this.input.resetInputValue();
                         this._updateHint();
                     }
